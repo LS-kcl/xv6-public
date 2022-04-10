@@ -1,0 +1,9 @@
+Important files:
+
+syscall.h:
+
+Tracks all the numbers of the system calls
+
+user.h:
+
+Keeps track of all the system calls that can be made
