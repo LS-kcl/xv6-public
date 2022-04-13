@@ -89,3 +89,75 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// My memory protect function:
+// Takes an address to start at, and a length of addresses
+// to protect
+// Returns 0 on success, and -1 on failure
+int
+sys_mprotect(void)
+{
+  pte_t *page_table;
+  void *addr;
+  int len;
+
+  // Fetch system call argument for address
+  if(argptr(0, &addr, 32) < 0)
+    // Handle error condition with faulty argument given
+    return -1;
+
+  // Fetch first system call argument for length
+  if(argint(0, &len) < 0)
+    // Handle error condition with faulty argument given
+    return -1;
+
+  // Handle failure case when length <= 0
+  if (len <= 0) {
+    return -1;
+  }
+
+  // Get page table
+  page_table = myproc()->pgdir;
+
+  // Remove PTE_W from table
+  *page_table &= ~PTE_W;
+
+  // Successful execution, return 0
+  return 0;
+} 
+
+// My memory unprotect function:
+// Takes an address to start at, and a length of addresses
+// to protect
+// Returns 0 on success, and -1 on failure
+int
+sys_munprotect(void)
+{
+  pte_t *page_table;
+  void *addr;
+  int len;
+
+  // Fetch system call argument for address
+  if(argptr(0, &addr, 32) < 0)
+    // Handle error condition with faulty argument given
+    return -1;
+
+  // Fetch first system call argument for length
+  if(argint(0, &len) < 0)
+    // Handle error condition with faulty argument given
+    return -1;
+
+  // Handle failure case when length <= 0
+  if (len <= 0) {
+    return -1;
+  }
+
+  // Get page table
+  page_table = myproc()->pgdir;
+
+  // Add PTE_W to all entries
+  *page_table |= PTE_W;
+
+  // Successful execution, return 0
+  return 0;
+} 
