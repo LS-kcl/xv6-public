@@ -10,6 +10,34 @@
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 
+// My memory protect function:
+// Takes an address to start at, and a length of addresses
+// to protect
+// Returns 0 on success, and -1 on failure
+int
+mprotect(void *addr, int len){
+  // Handle failure case when length <= 0
+  if (len <= 0) {
+    return -1;
+  }
+  // Successful execution, return 0
+  return 0;
+}
+
+// My memory unprotect function:
+// Takes an address to start at, and a length of addresses
+// to protect
+// Returns 0 on success, and -1 on failure
+int
+munprotect(void *addr, int len){
+  // Handle failure case when length <= 0
+  if (len <= 0) {
+    return -1;
+  }
+  // Successful execution, return 0
+  return 0;
+}
+
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
 void
